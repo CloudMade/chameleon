@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="hello_world_text_color_day_left_winter">#EF5350</color>
+    <color name="hello_world_text_color_day_left_spring">#880E4F</color>
+    <color name="hello_world_text_color_day_left_summer">#6A1B9A</color>
+    <color name="hello_world_text_color_day_left_autumn">#673AB7</color>
+
+    <color name="hello_world_text_color_day_right_winter">#3F51B5</color>
+    <color name="hello_world_text_color_day_right_spring">#42A5F5</color>
+    <color name="hello_world_text_color_day_right_summer">#4FC3F7</color>
+    <color name="hello_world_text_color_day_right_autumn">#4DD0E1</color>
+
+    <color name="hello_world_text_color_night_left_winter">#26A69A</color>
+    <color name="hello_world_text_color_night_left_spring">#66BB6A</color>
+    <color name="hello_world_text_color_night_left_summer">#AED581</color>
+    <color name="hello_world_text_color_night_left_autumn">#DCE775</color>
+
+    <color name="hello_world_text_color_night_right_winter">#FFEE58</color>
+    <color name="hello_world_text_color_night_right_spring">#FFC107</color>
+    <color name="hello_world_text_color_night_right_summer">#FF9800</color>
+    <color name="hello_world_text_color_night_right_autumn">#FF5722</color>
+</resources>

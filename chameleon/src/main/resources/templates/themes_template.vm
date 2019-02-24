@@ -1,0 +1,17 @@
+package $package;
+
+public enum ChameleonTheme implements com.cloudmade.chameleon.Theme {
+
+    $chameleonThemes
+
+    public final String resourceIdSuffix;
+
+    ChameleonTheme(String resourceIdSuffix) {
+        this.resourceIdSuffix = resourceIdSuffix;
+    }
+
+    @Override
+    public String getResourceIdSuffix() {
+        return resourceIdSuffix;
+    }
+}

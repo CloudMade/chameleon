@@ -1,0 +1,70 @@
+package $package;
+
+public class $themeElementProviderClassName implements com.cloudmade.chameleon.OnThemeChangeListener {
+
+    private android.content.Context context;
+
+    private String resourceIdThemeSuffix;
+
+    private java.util.Map<String, java.util.Set<String>> themeSuffixesMap;
+
+    private java.util.Map<String, java.util.Set<String>> themeElementResourcesMap;
+    private java.util.Map<String, android.databinding.ObservableInt> themeElementObservableIntMap;
+
+    public $themeElementProviderClassName(android.content.Context context) {
+        this.context = context;
+
+        initThemeSuffixes();
+        initThemeElements();
+        initObservables();
+    }
+
+    @Override
+    public void onThemeChange(com.cloudmade.chameleon.Theme theme) {
+        notifyThemeElementObservables(theme.getResourceIdSuffix());
+    }
+
+    $themeElementProvideMethods
+
+    private void initThemeSuffixes() {
+        themeSuffixesMap = new java.util.HashMap<>();
+
+        $themeSuffixesInitializer
+    }
+
+    private void initThemeElements() {
+        themeElementResourcesMap = new java.util.HashMap<>();
+
+        $themeElementResources
+    }
+
+    private void initObservables() {
+        themeElementObservableIntMap = new java.util.HashMap<>();
+
+        $themeElementProvidersInitializer
+    }
+
+    private void notifyThemeElementObservables(String resourceIdSuffix) {
+        resourceIdThemeSuffix = resourceIdSuffix;
+        for (android.databinding.ObservableInt observableInt : themeElementObservableIntMap.values()) {
+            observableInt.notifyChange();
+        }
+    }
+
+    private int getIdentifier(String resourceName) {
+        return context.getResources().getIdentifier(getResourceNameForTheme(resourceName), "$resourceDefType", context.getPackageName());
+    }
+
+    private String getResourceNameForTheme(String rawResourceName) {
+        java.util.Set<String> possibleResourceSuffixes = themeSuffixesMap.get(resourceIdThemeSuffix);
+        java.util.Set<String> themedResourceNames = themeElementResourcesMap.get(rawResourceName);
+        for (String possibleResourceSuffix : possibleResourceSuffixes) {
+            if (themedResourceNames.contains(rawResourceName + possibleResourceSuffix)) {
+                return rawResourceName + possibleResourceSuffix;
+            }
+        }
+
+        android.util.Log.e(getClass().getSimpleName(), String.format("Cannot get theme resource for resource %1$s for theme %2$s", rawResourceName, resourceIdThemeSuffix));
+        return themedResourceNames.iterator().next();
+    }
+}

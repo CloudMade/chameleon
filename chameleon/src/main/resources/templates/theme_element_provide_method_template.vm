@@ -1,0 +1,3 @@
+public android.databinding.ObservableInt $themeElementProvideMethod() {
+    return themeElementObservableIntMap.get("$themeElementProvideKey");
+}

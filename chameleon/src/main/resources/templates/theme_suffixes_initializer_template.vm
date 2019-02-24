@@ -1,0 +1,1 @@
+themeSuffixesMap.put("$theme", new java.util.HashSet<>(java.util.Arrays.asList($themeSuffixes)));

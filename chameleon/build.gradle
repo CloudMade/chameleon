@@ -1,0 +1,8 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation group: 'org.apache.velocity', name: 'velocity', version: '1.7'
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
