@@ -1,0 +1,82 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+apply from: 'bintray-props.gradle'
+
+group = publishedGroupId
+version = libraryVersion
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging 'jar'
+            groupId publishedGroupId
+            artifactId artifact
+
+            name libraryName
+            description libraryDescription
+            url siteUrl
+
+            licenses {
+                license {
+                    name licenseName
+                    url licenseUrl
+                }
+            }
+            developers {
+                developer {
+                    id developerIds[0]
+                    name developerNames[0]
+                    email developerEmails[0]
+                }
+                developer {
+                    id developerIds[1]
+                    name developerNames[1]
+                    email developerEmails[1]
+                }
+                developer {
+                    id developerIds[2]
+                    name developerNames[2]
+                    email developerEmails[2]
+                }
+            }
+            scm {
+                connection gitUrl
+                developerConnection gitUrl
+                url siteUrl
+            }
+        }
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier "sources"
+}
+
+artifacts {
+    archives sourceJar
+}
+
+bintray {
+    user = project.hasProperty("bintray.user") ? project.getProperty("bintray.user") : ""
+    key = project.hasProperty("bintray.apikey") ? project.getProperty("bintray.apikey") : ""
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        userOrg = bintrayUserOrg
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        dryRun = false
+        publish = true
+        override = false
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+        }
+    }
+}

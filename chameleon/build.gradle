@@ -1,5 +1,7 @@
 apply plugin: 'java-library'
 
+apply from: 'upload.gradle'
+
 dependencies {
     implementation group: 'org.apache.velocity', name: 'velocity', version: '1.7'
 }

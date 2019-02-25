@@ -1,0 +1,24 @@
+ext {
+    bintrayRepo = 'chameleon'
+    bintrayName = 'chameleon'
+    bintrayUserOrg = 'cloudmade'
+
+    publishedGroupId = 'com.cloudmade.chameleon'
+    libraryName = 'Chameleon'
+    artifact = 'chameleon'
+
+    libraryDescription = 'Chameleon is a library which allows to change themes in Android application in runtime.'
+
+    siteUrl = 'https://github.com/CloudMade/chameleon'
+    gitUrl = 'https://github.com/CloudMade/chameleon.git'
+
+    libraryVersion = '1.0.0'
+
+    developerIds = ['sergiy.grechukha', 'egor.danylenko', 'pavel.ratushnyi']
+    developerNames = ['Sergiy Grechukha', 'Egor Danylenko', 'Pavel Ratushnyi']
+    developerEmails = ['sergiy.grechukha@cloudmade.com', 'egor.danylenko@cloudmade.com', 'pavel.ratushnyi@cloudmade.com']
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
