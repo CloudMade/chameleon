@@ -6,19 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ThemeSuffixesExtractor {
+class ChameleonThemesExtractor {
 
-    Map<List<String>, List<String>> extractThemeSuffixes(String[] themeSuffixes, int[] themeSuffixesAmount) {
+    Map<ChameleonThemeEntity, List<String>> extractChameleonThemes(String[] themeSuffixes, int[] themeSuffixesAmount) {
         List<List<String>> themeSuffixesCombinations = getThemeSuffixesCombinationsFromGroups(
                 getThemeGroups(themeSuffixes, themeSuffixesAmount));
         return getThemeSuffixesMap(themeSuffixesCombinations);
     }
 
-    private Map<List<String>, List<String>> getThemeSuffixesMap(List<List<String>> themeSuffixesCombinations) {
-        Map<List<String>, List<String>> map = new HashMap<>();
+    private Map<ChameleonThemeEntity, List<String>> getThemeSuffixesMap(List<List<String>> themeSuffixesCombinations) {
+        Map<ChameleonThemeEntity, List<String>> map = new HashMap<>();
         for (List<String> themeSuffixesCombination : themeSuffixesCombinations) {
             List<String> allThemeSuffixesPermutationsForGroupCombinationsSet = getAllThemeSuffixesPermutationsForGroupCombinationsSet(themeSuffixesCombination);
-            map.put(themeSuffixesCombination, allThemeSuffixesPermutationsForGroupCombinationsSet);
+            map.put(ChameleonThemeEntity.fromList(themeSuffixesCombination), allThemeSuffixesPermutationsForGroupCombinationsSet);
         }
         return map;
     }

@@ -15,12 +15,11 @@ public class RClass {
     private Map<String, RInnerClass> rClass = new HashMap<>();
 
     RClass(TypeElement rClassElement) {
-        List<TypeElement> rInnerTypeElements = extractRInnerTypeElements(rClassElement);
+        processRInnerClasses(rClassElement);
+    }
 
-        for (TypeElement rInnerTypeElement : rInnerTypeElements) {
-            RInnerClass rInnerClass = new RInnerClass(rInnerTypeElement);
-            rClass.put(rInnerTypeElement.getSimpleName().toString(), rInnerClass);
-        }
+    public RInnerClass get(ResourceType resourceType) {
+        return rClass.get(resourceType.defType);
     }
 
     private List<TypeElement> extractRInnerTypeElements(TypeElement rClassElement) {
@@ -28,7 +27,12 @@ public class RClass {
         return ElementFilter.typesIn(rEnclosedElements);
     }
 
-    public RInnerClass get(ResourceType resourceType) {
-        return rClass.get(resourceType.defType);
+    private void processRInnerClasses(TypeElement rClassElement) {
+        List<TypeElement> rInnerTypeElements = extractRInnerTypeElements(rClassElement);
+
+        for (TypeElement rInnerTypeElement : rInnerTypeElements) {
+            RInnerClass rInnerClass = new RInnerClass(rInnerTypeElement);
+            rClass.put(rInnerTypeElement.getSimpleName().toString(), rInnerClass);
+        }
     }
 }

@@ -31,8 +31,9 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
     private RClassFinder rClassFinder;
     private ThemeElementProviderGenerator themeElementProviderGenerator;
     private ThemeResourceExtractor themeResourceExtractor;
-    private ThemeSuffixesExtractor themeSuffixesExtractor;
+    private ChameleonThemesExtractor chameleonThemesExtractor;
     private ThemesGenerator themesGenerator;
+    private JavaDocInfoExtractor javaDocInfoExtractor;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -46,8 +47,9 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         rClassFinder = new RClassFinder(processingEnvironment);
         themeElementProviderGenerator = new ThemeElementProviderGenerator(classGenerator);
         themeResourceExtractor = new ThemeResourceExtractor();
-        themeSuffixesExtractor = new ThemeSuffixesExtractor();
+        chameleonThemesExtractor = new ChameleonThemesExtractor();
         themesGenerator = new ThemesGenerator(classGenerator);
+        javaDocInfoExtractor = new JavaDocInfoExtractor();
     }
 
     @Override
@@ -55,21 +57,26 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         if (!nothingToDo(set, roundEnvironment)) {
             for (Element element : roundEnvironment.getElementsAnnotatedWith(ChameleonThemes.class)) {
                 String[] themeSuffixes = getThemeSuffixes(element);
-                Map<List<String>, List<String>> themeSuffixesMap = themeSuffixesExtractor.extractThemeSuffixes(themeSuffixes, getThemeSuffixesAmount(element));
-                generateThemeElementProviders(themeSuffixesMap,
-                        themeSuffixes, rClassFinder.find(getPackageName(element)), ResourceType.values());
-                themesGenerator.generate(themeSuffixesMap.keySet());
+                Map<ChameleonThemeEntity, List<String>> chameleonThemesMap = chameleonThemesExtractor.extractChameleonThemes(themeSuffixes, getThemeSuffixesAmount(element));
+                generateThemeElementProviders(chameleonThemesMap, themeSuffixes, chameleonThemesMap.keySet(), rClassFinder.find(getPackageName(element)), ResourceType.values());
+                generateThemes(chameleonThemesMap.keySet());
             }
         }
         return true;
     }
 
-    private void generateThemeElementProviders(Map<List<String>, List<String>> themeSuffixesMap, String[] themeSuffixes, RClass rClass, ResourceType... resourceTypes) {
+    private void generateThemeElementProviders(Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, String[] themeSuffixes,
+                                               Set<ChameleonThemeEntity> chameleonThemeEntitySet, RClass rClass, ResourceType... resourceTypes) {
         for (ResourceType resourceType : resourceTypes) {
             RInnerClass rInnerClass = rClass.get(resourceType);
             Map<String, List<String>> themeResourcesMap = rInnerClass != null ? themeResourceExtractor.getThemeResources(themeSuffixes, rInnerClass.getIdQualifiedNames()) : new HashMap<>();
-            themeElementProviderGenerator.generateClass(themeSuffixesMap, themeResourcesMap, resourceType);
+            Map<String, Map<String, String>> javaDocInfoMap = javaDocInfoExtractor.generateJavaDocInfo(chameleonThemesMap, themeResourcesMap, chameleonThemeEntitySet);
+            themeElementProviderGenerator.generateClass(chameleonThemesMap, javaDocInfoMap, themeResourcesMap, resourceType);
         }
+    }
+
+    private void generateThemes(Set<ChameleonThemeEntity> chameleonThemeEntitySet) {
+        themesGenerator.generate(chameleonThemeEntitySet);
     }
 
     private boolean nothingToDo(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

@@ -3,7 +3,6 @@ package com.cloudmade.chameleon;
 import org.apache.velocity.VelocityContext;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import static com.cloudmade.chameleon.ClassGenerator.GENERATED_PACKAGE;
@@ -18,41 +17,29 @@ class ThemesGenerator {
         this.classGenerator = classGenerator;
     }
 
-    void generate(Set<List<String>> themes) {
+    void generate(Set<ChameleonThemeEntity> chameleonThemeEntitySet) {
         VelocityContext velocityContext = new VelocityContext();
 
         velocityContext.put("package", GENERATED_PACKAGE);
-        velocityContext.put("chameleonThemes", getChameleonThemes(themes));
+        velocityContext.put("chameleonThemes", getChameleonThemes(chameleonThemeEntitySet));
 
         classGenerator.writeClass(velocityContext, VelocityTemplate.CHAMELEON_THEMES, CHAMELEON_THEME_ENUM_NAME);
     }
 
-    private String getChameleonThemes(Set<List<String>> themeSuffixes) {
+    private String getChameleonThemes(Set<ChameleonThemeEntity> chameleonThemeEntitySet) {
         StringBuilder sb = new StringBuilder();
-        Iterator<List<String>> iterator = themeSuffixes.iterator();
+        Iterator<ChameleonThemeEntity> iterator = chameleonThemeEntitySet.iterator();
         while (iterator.hasNext()) {
-            List<String> theme = iterator.next();
+            ChameleonThemeEntity theme = iterator.next();
 
             VelocityContext velocityContext = new VelocityContext();
 
-            velocityContext.put("themeName", getThemeName(theme));
-            velocityContext.put("themeSuffix", Algorithms.joinString(theme));
+            velocityContext.put("themeName", theme.getThemeName());
+            velocityContext.put("themeSuffix", theme.getThemeSuffix());
 
             sb.append(classGenerator.mergeVelocityContext(velocityContext,
                     VelocityTemplate.CHAMELEON_THEME));
             sb.append(iterator.hasNext() ? "," : ";").append("\n");
-        }
-        return sb.toString();
-    }
-
-    private String getThemeName(List<String> themeSuffixes) {
-        StringBuilder sb = new StringBuilder();
-        Iterator<String> iterator = themeSuffixes.iterator();
-        while (iterator.hasNext()) {
-            sb.append(iterator.next().toUpperCase().replaceAll("^[^0-9A-Z]+", ""));
-            if (iterator.hasNext()) {
-                sb.append("_");
-            }
         }
         return sb.toString();
     }

@@ -15,6 +15,14 @@ public class RInnerClass {
     private Set<String> idQualifiedNames = new HashSet<>();
 
     RInnerClass(TypeElement rInnerTypeElement) {
+        processRInnerQualifiedNames(rInnerTypeElement);
+    }
+
+    public Set<String> getIdQualifiedNames() {
+        return idQualifiedNames;
+    }
+
+    private void processRInnerQualifiedNames(TypeElement rInnerTypeElement) {
         List<? extends Element> idEnclosedElements = rInnerTypeElement.getEnclosedElements();
         List<VariableElement> idFields = ElementFilter.fieldsIn(idEnclosedElements);
         for (VariableElement idField : idFields) {
@@ -23,9 +31,5 @@ public class RInnerClass {
                 idQualifiedNames.add(idField.getSimpleName().toString());
             }
         }
-    }
-
-    public Set<String> getIdQualifiedNames() {
-        return idQualifiedNames;
     }
 }
