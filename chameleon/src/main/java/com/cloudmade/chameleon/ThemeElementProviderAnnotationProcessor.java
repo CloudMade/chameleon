@@ -58,7 +58,7 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
             for (Element element : roundEnvironment.getElementsAnnotatedWith(ChameleonThemes.class)) {
                 String[] themeSuffixes = getThemeSuffixes(element);
                 Map<ChameleonThemeEntity, List<String>> chameleonThemesMap = chameleonThemesExtractor.extractChameleonThemes(themeSuffixes, getThemeSuffixesAmount(element));
-                generateThemeElementProviders(chameleonThemesMap, themeSuffixes, chameleonThemesMap.keySet(), rClassFinder.find(getPackageName(element)), ResourceType.values());
+                generateThemeElementProviders(chameleonThemesMap, themeSuffixes, chameleonThemesMap.keySet(), getPackageName(element), ResourceType.values());
                 generateThemes(chameleonThemesMap.keySet());
             }
         }
@@ -66,12 +66,13 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
     }
 
     private void generateThemeElementProviders(Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, String[] themeSuffixes,
-                                               Set<ChameleonThemeEntity> chameleonThemeEntitySet, RClass rClass, ResourceType... resourceTypes) {
+                                               Set<ChameleonThemeEntity> chameleonThemeEntitySet, String packageName, ResourceType... resourceTypes) {
+        RClass rClass = rClassFinder.find(packageName);
         for (ResourceType resourceType : resourceTypes) {
             RInnerClass rInnerClass = rClass.get(resourceType);
             Map<String, List<String>> themeResourcesMap = rInnerClass != null ? themeResourceExtractor.getThemeResources(themeSuffixes, rInnerClass.getIdQualifiedNames()) : new HashMap<>();
             Map<String, Map<String, String>> javaDocInfoMap = javaDocInfoExtractor.generateJavaDocInfo(chameleonThemesMap, themeResourcesMap, chameleonThemeEntitySet);
-            themeElementProviderGenerator.generateClass(chameleonThemesMap, javaDocInfoMap, themeResourcesMap, resourceType);
+            themeElementProviderGenerator.generateClass(chameleonThemesMap, javaDocInfoMap, themeResourcesMap, resourceType, packageName);
         }
     }
 

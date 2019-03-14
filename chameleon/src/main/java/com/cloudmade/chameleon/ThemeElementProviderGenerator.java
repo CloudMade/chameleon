@@ -18,7 +18,7 @@ class ThemeElementProviderGenerator {
     }
 
     void generateClass(Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, Map<String, Map<String, String>> javaDocInfoMap,
-                       Map<String, List<String>> resourcesMap, ResourceType resourceType) {
+                       Map<String, List<String>> resourcesMap, ResourceType resourceType, String packageName) {
         Set<String> resources = resourcesMap.keySet();
 
         String themeElementProviderClassName = getThemeElementProviderClassName(resourceType);
@@ -27,7 +27,7 @@ class ThemeElementProviderGenerator {
 
         velocityContext.put("package", GENERATED_PACKAGE);
         velocityContext.put("themeElementProviderClassName", themeElementProviderClassName);
-        velocityContext.put("themeElementProvideMethods", getThemeElementProvideMethods(resources, javaDocInfoMap));
+        velocityContext.put("themeElementProvideMethods", getThemeElementProvideMethods(resources, javaDocInfoMap, packageName, resourceType));
         velocityContext.put("themeSuffixesInitializer", getThemeSuffixesInitializer(chameleonThemesMap));
         velocityContext.put("themeElementResources", getThemeElementResources(resourcesMap));
         velocityContext.put("themeElementProvidersInitializer", getThemeElementProvidersInitializer(resources));
@@ -64,14 +64,15 @@ class ThemeElementProviderGenerator {
         return sb.toString();
     }
 
-    private String getThemeElementProvideMethods(Set<String> themeResources, Map<String, Map<String, String>> javaDocInfoMap) {
+    private String getThemeElementProvideMethods(Set<String> themeResources, Map<String, Map<String, String>> javaDocInfoMap,
+                                                 String packageName, ResourceType resourceType) {
         StringBuilder themeElementProviderMethodsStringBuilder = new StringBuilder();
         for (String themeResource : themeResources) {
             VelocityContext velocityContext = new VelocityContext();
 
             velocityContext.put("themeElementProvideMethod", getThemeElementProviderMethodName(themeResource));
             velocityContext.put("themeElementProvideKey", themeResource);
-            velocityContext.put("javaDocInfo", getJavaDocInfo(javaDocInfoMap.get(themeResource)));
+            velocityContext.put("javaDocInfo", getJavaDocInfo(javaDocInfoMap.get(themeResource), packageName, resourceType));
 
             themeElementProviderMethodsStringBuilder.append(classGenerator.mergeVelocityContext(velocityContext,
                     VelocityTemplate.THEME_ELEMENT_PROVIDE_METHOD)).append("\n");
@@ -79,7 +80,7 @@ class ThemeElementProviderGenerator {
         return themeElementProviderMethodsStringBuilder.toString();
     }
 
-    private String getJavaDocInfo(Map<String, String> javaDocInfoMap) {
+    private String getJavaDocInfo(Map<String, String> javaDocInfoMap, String packageName, ResourceType resourceType) {
         StringBuilder javaDocStringBuilder = new StringBuilder();
         Iterator<Map.Entry<String, String>> iterator = javaDocInfoMap.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -88,7 +89,7 @@ class ThemeElementProviderGenerator {
             VelocityContext velocityContext = new VelocityContext();
 
             velocityContext.put("theme", entry.getKey());
-            velocityContext.put("resource", entry.getValue());
+            velocityContext.put("resource", String.format("%s.R.%s.%s" , packageName, resourceType.defType, entry.getValue()));
 
             javaDocStringBuilder.append(classGenerator.mergeVelocityContext(velocityContext, VelocityTemplate.JAVA_DOC_INFO));
             if (iterator.hasNext()) {
