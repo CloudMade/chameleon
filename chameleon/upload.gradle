@@ -24,20 +24,12 @@ install {
                 }
             }
             developers {
-                developer {
-                    id developerIds[0]
-                    name developerNames[0]
-                    email developerEmails[0]
-                }
-                developer {
-                    id developerIds[1]
-                    name developerNames[1]
-                    email developerEmails[1]
-                }
-                developer {
-                    id developerIds[2]
-                    name developerNames[2]
-                    email developerEmails[2]
+                for (int i = 0; i < developers.size(); i++) {
+                    developer {
+                        id developers[i].getDeveloperId()
+                        name developers[i].getDeveloperName()
+                        email developers[i].getDeveloperEmail()
+                    }
                 }
             }
             scm {

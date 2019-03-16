@@ -12,13 +12,39 @@ ext {
     siteUrl = 'https://github.com/CloudMade/chameleon'
     gitUrl = 'https://github.com/CloudMade/chameleon.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.1.0'
 
-    developerIds = ['sergiy.grechukha', 'egor.danylenko', 'pavel.ratushnyi']
-    developerNames = ['Sergiy Grechukha', 'Egor Danylenko', 'Pavel Ratushnyi']
-    developerEmails = ['sergiy.grechukha@cloudmade.com', 'egor.danylenko@cloudmade.com', 'pavel.ratushnyi@cloudmade.com']
+    developers = [
+            new Developer('sergiy.grechukha', 'Sergiy Grechukha', 'sergiy.grechukha@cloudmade.com'),
+            new Developer('egor.danylenko', 'Egor Danylenko', 'egor.danylenko@cloudmade.com'),
+            new Developer('pavel.ratushnyi', 'Pavel Ratushnyi', 'pavel.ratushnyi@cloudmade.com')
+    ]
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
+}
+
+class Developer {
+    private String developerId
+    private String developerName
+    private String developerEmail
+
+    Developer(String developerId, String developerName, String developerEmail) {
+        this.developerId = developerId
+        this.developerName = developerName
+        this.developerEmail = developerEmail
+    }
+
+    String getDeveloperId() {
+        return developerId
+    }
+
+    String getDeveloperName() {
+        return developerName
+    }
+
+    String getDeveloperEmail() {
+        return developerEmail
+    }
 }
