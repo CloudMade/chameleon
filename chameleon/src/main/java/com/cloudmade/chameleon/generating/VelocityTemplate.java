@@ -1,4 +1,4 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 public enum VelocityTemplate {
 

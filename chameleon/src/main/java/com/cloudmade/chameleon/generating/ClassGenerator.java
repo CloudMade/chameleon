@@ -1,4 +1,4 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -32,8 +32,7 @@ class ClassGenerator {
             template.merge(velocityContext, writer);
             writer.close();
         } catch (IOException e) {
-            System.out.println("Failed " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Failed " + e.getMessage());
         }
     }
 

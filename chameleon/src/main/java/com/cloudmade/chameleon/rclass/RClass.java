@@ -1,6 +1,6 @@
 package com.cloudmade.chameleon.rclass;
 
-import com.cloudmade.chameleon.ResourceType;
+import com.cloudmade.chameleon.generating.ResourceType;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,6 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
+
+import com.sun.istack.internal.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +10,7 @@ public class ChameleonThemeEntity {
     private String themeName;
     private String themeSuffix;
 
-    private ChameleonThemeEntity(String themeName, String themeSuffix) {
+    private ChameleonThemeEntity(@NotNull String themeName, @NotNull String themeSuffix) {
         this.themeName = themeName;
         this.themeSuffix = themeSuffix;
     }
@@ -26,16 +28,15 @@ public class ChameleonThemeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChameleonThemeEntity that = (ChameleonThemeEntity) o;
-        return ((themeName == null && that.themeName == null) || themeName != null && themeName.equals(that.themeName)) &&
-                ((themeSuffix == null && that.themeSuffix == null) || themeSuffix != null && themeSuffix.equals(that.themeSuffix));
+        return themeName.equals(that.themeName) && themeSuffix.equals(that.themeSuffix);
     }
 
     @Override
     public int hashCode() {
         int prime = 31;
         int result = 1;
-        result = prime * result + ((themeName == null) ? 0 : themeName.hashCode());
-        result = prime * result + ((themeSuffix == null) ? 0 : themeSuffix.hashCode());
+        result = prime * result + themeName.hashCode();
+        result = prime * result + themeSuffix.hashCode();
         return result;
     }
 

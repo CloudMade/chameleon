@@ -1,5 +1,6 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
+import com.cloudmade.chameleon.ChameleonThemes;
 import com.cloudmade.chameleon.rclass.RClass;
 import com.cloudmade.chameleon.rclass.RClassFinder;
 import com.cloudmade.chameleon.rclass.RInnerClass;
@@ -30,10 +31,7 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
 
     private RClassFinder rClassFinder;
     private ThemeElementProviderGenerator themeElementProviderGenerator;
-    private ThemeResourceExtractor themeResourceExtractor;
-    private ChameleonThemesExtractor chameleonThemesExtractor;
     private ThemesGenerator themesGenerator;
-    private JavaDocInfoExtractor javaDocInfoExtractor;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -46,10 +44,7 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         ClassGenerator classGenerator = new ClassGenerator(processingEnvironment, velocityEngine);
         rClassFinder = new RClassFinder(processingEnvironment);
         themeElementProviderGenerator = new ThemeElementProviderGenerator(classGenerator);
-        themeResourceExtractor = new ThemeResourceExtractor();
-        chameleonThemesExtractor = new ChameleonThemesExtractor();
         themesGenerator = new ThemesGenerator(classGenerator);
-        javaDocInfoExtractor = new JavaDocInfoExtractor();
     }
 
     @Override
@@ -57,7 +52,7 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         if (!nothingToDo(set, roundEnvironment)) {
             for (Element element : roundEnvironment.getElementsAnnotatedWith(ChameleonThemes.class)) {
                 String[] themeSuffixes = getThemeSuffixes(element);
-                Map<ChameleonThemeEntity, List<String>> chameleonThemesMap = chameleonThemesExtractor.extractChameleonThemes(themeSuffixes, getThemeSuffixesAmount(element));
+                Map<ChameleonThemeEntity, List<String>> chameleonThemesMap = ChameleonThemesExtractor.extractChameleonThemes(themeSuffixes, getThemeSuffixesAmount(element));
                 generateThemeElementProviders(chameleonThemesMap, themeSuffixes, chameleonThemesMap.keySet(), getPackageName(element), ResourceType.values());
                 generateThemes(chameleonThemesMap.keySet());
             }
@@ -70,8 +65,8 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         RClass rClass = rClassFinder.find(packageName);
         for (ResourceType resourceType : resourceTypes) {
             RInnerClass rInnerClass = rClass.get(resourceType);
-            Map<String, List<String>> themeResourcesMap = rInnerClass != null ? themeResourceExtractor.getThemeResources(themeSuffixes, rInnerClass.getIdQualifiedNames()) : new HashMap<>();
-            Map<String, Map<String, String>> javaDocInfoMap = javaDocInfoExtractor.generateJavaDocInfo(chameleonThemesMap, themeResourcesMap, chameleonThemeEntitySet);
+            Map<String, List<String>> themeResourcesMap = rInnerClass != null ? ThemeResourceExtractor.getThemeResources(themeSuffixes, rInnerClass.getIdQualifiedNames()) : new HashMap<>();
+            Map<String, Map<String, String>> javaDocInfoMap = JavaDocInfoExtractor.generateJavaDocInfo(chameleonThemesMap, themeResourcesMap, chameleonThemeEntitySet);
             themeElementProviderGenerator.generateClass(chameleonThemesMap, javaDocInfoMap, themeResourcesMap, resourceType, packageName);
         }
     }

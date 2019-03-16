@@ -1,11 +1,11 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 import org.apache.velocity.VelocityContext;
 
 import java.util.Iterator;
 import java.util.Set;
 
-import static com.cloudmade.chameleon.ClassGenerator.GENERATED_PACKAGE;
+import static com.cloudmade.chameleon.generating.ClassGenerator.GENERATED_PACKAGE;
 
 class ThemesGenerator {
 

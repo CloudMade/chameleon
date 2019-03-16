@@ -1,4 +1,4 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +7,9 @@ import java.util.Set;
 
 class JavaDocInfoExtractor {
 
-    Map<String, Map<String, String>> generateJavaDocInfo(Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, Map<String, List<String>> themeResourcesMap, Set<ChameleonThemeEntity> themeSuffixes) {
+    private JavaDocInfoExtractor() {}
+
+    static Map<String, Map<String, String>> generateJavaDocInfo(Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, Map<String, List<String>> themeResourcesMap, Set<ChameleonThemeEntity> themeSuffixes) {
         Map<String, Map<String, String>> javaDocInfoMap = new HashMap<>();
         for (Map.Entry<String, List<String>> entry : themeResourcesMap.entrySet()) {
             Map<String, String> themeResourceMap = new HashMap<>();
@@ -19,7 +21,8 @@ class JavaDocInfoExtractor {
         return javaDocInfoMap;
     }
 
-    private String getResourceNameForTheme(String rawResourceName, Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, Map<String, List<String>> themeResourcesMap, ChameleonThemeEntity chameleonThemeEntity) {
+    static private String getResourceNameForTheme(String rawResourceName, Map<ChameleonThemeEntity, List<String>> chameleonThemesMap,
+                                                  Map<String, List<String>> themeResourcesMap, ChameleonThemeEntity chameleonThemeEntity) {
         List<String> possibleResourceSuffixes = chameleonThemesMap.get(chameleonThemeEntity);
         List<String> themedResourceNames = themeResourcesMap.get(rawResourceName);
         for (String possibleResourceSuffix : possibleResourceSuffixes) {
@@ -28,7 +31,7 @@ class JavaDocInfoExtractor {
             }
         }
 
-        System.out.println(String.format("Cannot get theme resource for resource %1$s for theme %2$s", rawResourceName, chameleonThemeEntity.getThemeName()));
+        System.err.println(String.format("Cannot get theme resource for resource %1$s for theme %2$s", rawResourceName, chameleonThemeEntity.getThemeName()));
         return themedResourceNames.iterator().next();
     }
 }

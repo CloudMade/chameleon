@@ -1,4 +1,4 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,13 +8,15 @@ import java.util.Map;
 
 class ChameleonThemesExtractor {
 
-    Map<ChameleonThemeEntity, List<String>> extractChameleonThemes(String[] themeSuffixes, int[] themeSuffixesAmount) {
+    private ChameleonThemesExtractor() {}
+
+    static Map<ChameleonThemeEntity, List<String>> extractChameleonThemes(String[] themeSuffixes, int[] themeSuffixesAmount) {
         List<List<String>> themeSuffixesCombinations = getThemeSuffixesCombinationsFromGroups(
                 getThemeGroups(themeSuffixes, themeSuffixesAmount));
-        return getThemeSuffixesMap(themeSuffixesCombinations);
+        return getChameleonThemesMap(themeSuffixesCombinations);
     }
 
-    private Map<ChameleonThemeEntity, List<String>> getThemeSuffixesMap(List<List<String>> themeSuffixesCombinations) {
+    static private Map<ChameleonThemeEntity, List<String>> getChameleonThemesMap(List<List<String>> themeSuffixesCombinations) {
         Map<ChameleonThemeEntity, List<String>> map = new HashMap<>();
         for (List<String> themeSuffixesCombination : themeSuffixesCombinations) {
             List<String> allThemeSuffixesPermutationsForGroupCombinationsSet = getAllThemeSuffixesPermutationsForGroupCombinationsSet(themeSuffixesCombination);
@@ -23,7 +25,7 @@ class ChameleonThemesExtractor {
         return map;
     }
 
-    private String[][] getThemeGroups(String[] themeSuffixes, int[] themeSuffixesAmount) {
+    static private String[][] getThemeGroups(String[] themeSuffixes, int[] themeSuffixesAmount) {
         String[][] themeGroups = new String[themeSuffixesAmount.length][];
         for (int i = 0; i < themeSuffixesAmount.length; i++) {
             String[] themeGroupSuffixes = new String[themeSuffixesAmount[i]];
@@ -37,7 +39,7 @@ class ChameleonThemesExtractor {
         return themeGroups;
     }
 
-    private List<List<String>> getThemeSuffixesCombinationsFromGroups(String[][] themeGroups) {
+    static private List<List<String>> getThemeSuffixesCombinationsFromGroups(String[][] themeGroups) {
         List<List<String>> themeSuffixesCombinations = new ArrayList<>();
         for (String[] themeGroup : themeGroups) {
             List<List<String>> existingThemeSuffixesCombinations = new ArrayList<>(themeSuffixesCombinations);
@@ -57,7 +59,7 @@ class ChameleonThemesExtractor {
         return themeSuffixesCombinations;
     }
 
-    private List<String> getAllThemeSuffixesPermutationsForGroupCombinationsSet(List<String> themeSuffixesCombination) {
+    static private List<String> getAllThemeSuffixesPermutationsForGroupCombinationsSet(List<String> themeSuffixesCombination) {
         List<String> allThemeSuffixesPermutationsForGroupCombinationsSet = new ArrayList<>();
         for (List<String> permutation : getAllThemeSuffixesPermutationsForGroupCombinations(Algorithms.powerSet(themeSuffixesCombination))) {
             if (!permutation.isEmpty()) {
@@ -67,7 +69,8 @@ class ChameleonThemesExtractor {
         return allThemeSuffixesPermutationsForGroupCombinationsSet;
     }
 
-    private List<List<String>> getAllThemeSuffixesPermutationsForGroupCombinations(List<List<String>> themeSuffixesCombinations) {
+    @SuppressWarnings("Java8ListSort")
+    static private List<List<String>> getAllThemeSuffixesPermutationsForGroupCombinations(List<List<String>> themeSuffixesCombinations) {
         List<List<String>> allThemeSuffixesPermutations = new ArrayList<>();
         for (List<String> combination : themeSuffixesCombinations) {
             allThemeSuffixesPermutations.addAll(Algorithms.permute(combination));

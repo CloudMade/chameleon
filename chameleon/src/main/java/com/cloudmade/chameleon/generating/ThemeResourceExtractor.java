@@ -1,4 +1,4 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +8,10 @@ import java.util.Set;
 
 class ThemeResourceExtractor {
 
+    private ThemeResourceExtractor() {}
+
     @SuppressWarnings("Java8MapApi")
-    Map<String, List<String>> getThemeResources(String[] themeSuffixes, Set<String> resources) {
+    static Map<String, List<String>> getThemeResources(String[] themeSuffixes, Set<String> resources) {
         Map<String, List<String>> themeResourcesMap = new HashMap<>();
         for (String resource : resources) {
             if (isThemeResource(themeSuffixes, resource)) {
@@ -25,7 +27,7 @@ class ThemeResourceExtractor {
         return themeResourcesMap;
     }
 
-    private String getRawThemeResource(String[] themeSuffixes, String themeResource) {
+    static private String getRawThemeResource(String[] themeSuffixes, String themeResource) {
         int themeSuffixesIndex = Integer.MAX_VALUE;
         for (String themeSuffix : themeSuffixes) {
             int currentThemeSuffixIndex = themeResource.lastIndexOf(themeSuffix);
@@ -37,7 +39,7 @@ class ThemeResourceExtractor {
         return themeResource.substring(0, themeSuffixesIndex);
     }
 
-    private boolean isThemeResource(String[] themeSuffixes, String resource) {
+    static private boolean isThemeResource(String[] themeSuffixes, String resource) {
         for (String themeSuffix : themeSuffixes) {
             if (resource.endsWith(themeSuffix)) {
                 return true;
