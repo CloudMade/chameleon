@@ -1,7 +1,5 @@
 package com.cloudmade.chameleon.generating;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,7 +8,7 @@ public class ChameleonThemeEntity {
     private String themeName;
     private String themeSuffix;
 
-    private ChameleonThemeEntity(@NotNull String themeName, @NotNull String themeSuffix) {
+    private ChameleonThemeEntity(String themeName, String themeSuffix) {
         this.themeName = themeName;
         this.themeSuffix = themeSuffix;
     }
