@@ -15,9 +15,9 @@ ext {
     libraryVersion = '1.1.0'
 
     developers = [
-            new Developer('sergiy.grechukha', 'Sergiy Grechukha', 'sergiy.grechukha@cloudmade.com'),
-            new Developer('egor.danylenko', 'Egor Danylenko', 'egor.danylenko@cloudmade.com'),
-            new Developer('pavel.ratushnyi', 'Pavel Ratushnyi', 'pavel.ratushnyi@cloudmade.com')
+            new Developer(developerId: 'sergiy.grechukha', developerName: 'Sergiy Grechukha', developerEmail: 'sergiy.grechukha@cloudmade.com'),
+            new Developer(developerId: 'egor.danylenko', developerName: 'Egor Danylenko', developerEmail: 'egor.danylenko@cloudmade.com'),
+            new Developer(developerId: 'pavel.ratushnyi', developerName: 'Pavel Ratushnyi', developerEmail: 'pavel.ratushnyi@cloudmade.com')
     ]
 
     licenseName = 'The Apache Software License, Version 2.0'
@@ -26,25 +26,7 @@ ext {
 }
 
 class Developer {
-    private String developerId
-    private String developerName
-    private String developerEmail
-
-    Developer(String developerId, String developerName, String developerEmail) {
-        this.developerId = developerId
-        this.developerName = developerName
-        this.developerEmail = developerEmail
-    }
-
-    String getDeveloperId() {
-        return developerId
-    }
-
-    String getDeveloperName() {
-        return developerName
-    }
-
-    String getDeveloperEmail() {
-        return developerEmail
-    }
+    String developerId
+    String developerEmail
+    String developerName
 }
