@@ -1,5 +1,6 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
+import com.cloudmade.chameleon.ChameleonThemes;
 import com.cloudmade.chameleon.rclass.RClass;
 import com.cloudmade.chameleon.rclass.RClassFinder;
 import com.cloudmade.chameleon.rclass.RInnerClass;
@@ -30,8 +31,6 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
 
     private RClassFinder rClassFinder;
     private ThemeElementProviderGenerator themeElementProviderGenerator;
-    private ThemeResourceExtractor themeResourceExtractor;
-    private ThemeSuffixesExtractor themeSuffixesExtractor;
     private ThemesGenerator themesGenerator;
 
     @Override
@@ -45,8 +44,6 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         ClassGenerator classGenerator = new ClassGenerator(processingEnvironment, velocityEngine);
         rClassFinder = new RClassFinder(processingEnvironment);
         themeElementProviderGenerator = new ThemeElementProviderGenerator(classGenerator);
-        themeResourceExtractor = new ThemeResourceExtractor();
-        themeSuffixesExtractor = new ThemeSuffixesExtractor();
         themesGenerator = new ThemesGenerator(classGenerator);
     }
 
@@ -55,21 +52,27 @@ public class ThemeElementProviderAnnotationProcessor extends AbstractProcessor {
         if (!nothingToDo(set, roundEnvironment)) {
             for (Element element : roundEnvironment.getElementsAnnotatedWith(ChameleonThemes.class)) {
                 String[] themeSuffixes = getThemeSuffixes(element);
-                Map<List<String>, List<String>> themeSuffixesMap = themeSuffixesExtractor.extractThemeSuffixes(themeSuffixes, getThemeSuffixesAmount(element));
-                generateThemeElementProviders(themeSuffixesMap,
-                        themeSuffixes, rClassFinder.find(getPackageName(element)), ResourceType.values());
-                themesGenerator.generate(themeSuffixesMap.keySet());
+                Map<ChameleonThemeEntity, List<String>> chameleonThemesMap = ChameleonThemesExtractor.extractChameleonThemes(themeSuffixes, getThemeSuffixesAmount(element));
+                generateThemeElementProviders(chameleonThemesMap, themeSuffixes, chameleonThemesMap.keySet(), getPackageName(element), ResourceType.values());
+                generateThemes(chameleonThemesMap.keySet());
             }
         }
         return true;
     }
 
-    private void generateThemeElementProviders(Map<List<String>, List<String>> themeSuffixesMap, String[] themeSuffixes, RClass rClass, ResourceType... resourceTypes) {
+    private void generateThemeElementProviders(Map<ChameleonThemeEntity, List<String>> chameleonThemesMap, String[] themeSuffixes,
+                                               Set<ChameleonThemeEntity> chameleonThemeEntitySet, String packageName, ResourceType... resourceTypes) {
+        RClass rClass = rClassFinder.find(packageName);
         for (ResourceType resourceType : resourceTypes) {
             RInnerClass rInnerClass = rClass.get(resourceType);
-            Map<String, List<String>> themeResourcesMap = rInnerClass != null ? themeResourceExtractor.getThemeResources(themeSuffixes, rInnerClass.getIdQualifiedNames()) : new HashMap<>();
-            themeElementProviderGenerator.generateClass(themeSuffixesMap, themeResourcesMap, resourceType);
+            Map<String, List<String>> themeResourcesMap = rInnerClass != null ? ThemeResourceExtractor.getThemeResources(themeSuffixes, rInnerClass.getIdQualifiedNames()) : new HashMap<>();
+            Map<String, Map<String, String>> javaDocInfoMap = JavaDocInfoExtractor.generateJavaDocInfo(chameleonThemesMap, themeResourcesMap, chameleonThemeEntitySet);
+            themeElementProviderGenerator.generateClass(chameleonThemesMap, javaDocInfoMap, themeResourcesMap, resourceType, packageName);
         }
+    }
+
+    private void generateThemes(Set<ChameleonThemeEntity> chameleonThemeEntitySet) {
+        themesGenerator.generate(chameleonThemeEntitySet);
     }
 
     private boolean nothingToDo(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

@@ -1,4 +1,4 @@
-package com.cloudmade.chameleon;
+package com.cloudmade.chameleon.generating;
 
 import java.util.ArrayList;
 import java.util.Iterator;
