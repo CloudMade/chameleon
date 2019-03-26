@@ -128,9 +128,9 @@ Also **ThemeColorProvider** class will be generated:
 
 Create separate module with annotated class with `@ChameleonThemes` annotation and resources which should support changing themes and add to its **build.gradle**:
     
-    api 'com.cloudmade.chameleon:chameleon:1.0.0'
-    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.0.0'
+    api 'com.cloudmade.chameleon:chameleon:1.1.0'
+    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.1.0'
 In your app's **build.gradle** add dependency to created separate module (let's call it **chameleonwrapper**) and specify annotation processor from **Chameleon** library:
     
     implementation project(":chameleonwrapper")
-    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.0.0'
+    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.1.0'
