@@ -9,7 +9,7 @@ public class $themeElementProviderClassName implements com.cloudmade.chameleon.O
     private java.util.Map<String, java.util.Set<String>> themeSuffixesMap;
 
     private java.util.Map<String, java.util.Set<String>> themeElementResourcesMap;
-    private java.util.Map<String, android.databinding.ObservableInt> themeElementObservableIntMap;
+    private java.util.Map<String, androidx.lifecycle.MutableLiveData<Integer>> themeElementLiveDataMap;
 
     public $themeElementProviderClassName(android.content.Context context) {
         this.context = context;
@@ -39,15 +39,15 @@ public class $themeElementProviderClassName implements com.cloudmade.chameleon.O
     }
 
     private void initObservables() {
-        themeElementObservableIntMap = new java.util.HashMap<>();
+        themeElementLiveDataMap = new java.util.HashMap<>();
 
         $themeElementProvidersInitializer
     }
 
     private void notifyThemeElementObservables(String resourceIdSuffix) {
         resourceIdThemeSuffix = resourceIdSuffix;
-        for (android.databinding.ObservableInt observableInt : themeElementObservableIntMap.values()) {
-            observableInt.notifyChange();
+        for (java.util.Map.Entry<String, androidx.lifecycle.MutableLiveData<Integer>> liveData : themeElementLiveDataMap.entrySet()) {
+            liveData.getValue().setValue(getIdentifier(liveData.getKey()));
         }
     }
 

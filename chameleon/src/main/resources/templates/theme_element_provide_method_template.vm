@@ -2,6 +2,6 @@
 $javaDocInfo
  * @return
  */
-public android.databinding.ObservableInt $themeElementProvideMethod() {
-    return themeElementObservableIntMap.get("$themeElementProvideKey");
+public androidx.lifecycle.LiveData<Integer> $themeElementProvideMethod() {
+    return themeElementLiveDataMap.get("$themeElementProvideKey");
 }

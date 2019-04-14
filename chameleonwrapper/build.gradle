@@ -21,13 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
     api project(":chameleon")
     annotationProcessor project(":chameleon")
+    compileOnly 'androidx.lifecycle:lifecycle-livedata:2.0.0'
 }

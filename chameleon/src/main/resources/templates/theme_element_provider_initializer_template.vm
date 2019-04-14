@@ -1,6 +1,1 @@
-themeElementObservableIntMap.put("$themeElementProviderKey", new android.databinding.ObservableInt() {
-    @Override
-    public int get() {
-        return getIdentifier("$themeElementProviderKey");
-    }
-});
+themeElementLiveDataMap.put("$themeElementProviderKey", new androidx.lifecycle.MutableLiveData<>());

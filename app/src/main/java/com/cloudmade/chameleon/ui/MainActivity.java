@@ -1,8 +1,6 @@
 package com.cloudmade.chameleon.ui;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.cloudmade.chameleon.ChameleonSampleApplication;
 import com.cloudmade.chameleon.R;
@@ -15,6 +13,9 @@ import com.cloudmade.chameleon.di.ApplicationComponent;
 import com.cloudmade.chameleon.viewmodel.ViewModelMainActivity;
 
 import javax.inject.Inject;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         binding.setViewModel(viewModelMainActivity);
         binding.setThemeColorProvider(themeColorProvider);
         binding.setThemeDrawableProvider(themeDrawableProvider);
+
+        binding.setLifecycleOwner(this);
     }
 
     @Override

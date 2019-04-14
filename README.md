@@ -86,8 +86,8 @@ Also **ThemeColorProvider** class will be generated:
     
         ...
         
-        public android.databinding.ObservableInt helloWorldTextColor() {
-            return themeElementObservableIntMap.get("hello_world_text_color");
+        public androidx.lifecycle.LiveData<Integer> helloWorldTextColor() {
+            return themeElementLiveDataMap.get("hello_world_text_color");
         }
         
         ...
@@ -128,9 +128,10 @@ Also **ThemeColorProvider** class will be generated:
 
 Create separate module with annotated class with `@ChameleonThemes` annotation and resources which should support changing themes and add to its **build.gradle**:
     
-    api 'com.cloudmade.chameleon:chameleon:1.1.0'
-    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.1.0'
+    api 'com.cloudmade.chameleon:chameleon:1.2.0'
+    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.2.0'
+    compileOnly 'androidx.lifecycle:lifecycle-livedata:2.0.0'
 In your app's **build.gradle** add dependency to created separate module (let's call it **chameleonwrapper**) and specify annotation processor from **Chameleon** library:
     
     implementation project(":chameleonwrapper")
-    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.1.0'
+    annotationProcessor 'com.cloudmade.chameleon:chameleon:1.2.0'

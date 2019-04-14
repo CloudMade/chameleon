@@ -1,6 +1,5 @@
 package com.cloudmade.chameleon.di;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 
 import com.cloudmade.chameleon.ThemeColorProvider;
@@ -33,16 +32,12 @@ public class ApplicationModule {
         return new UIStyleManager();
     }
 
-    @SuppressLint("CheckResult")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Provides
     @Singleton
     ThemeColorProvider themeColorProvider() {
         return new ThemeColorProvider(application);
     }
 
-    @SuppressLint("CheckResult")
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Provides
     @Singleton
     ThemeDrawableProvider themeDrawableProvider() {
