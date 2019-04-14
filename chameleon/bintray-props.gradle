@@ -12,7 +12,7 @@ ext {
     siteUrl = 'https://github.com/CloudMade/chameleon'
     gitUrl = 'https://github.com/CloudMade/chameleon.git'
 
-    libraryVersion = '1.1.0'
+    libraryVersion = '1.2.0'
 
     developers = [
             new Developer(developerId: 'sergiy.grechukha', developerName: 'Sergiy Grechukha', developerEmail: 'sergiy.grechukha@cloudmade.com'),
