@@ -86,7 +86,7 @@ Also **ThemeColorProvider** class will be generated:
     
         ...
         
-        public androidx.lifecycle.MutableLiveData<Integer> helloWorldTextColor() {
+        public androidx.lifecycle.LiveData<Integer> helloWorldTextColor() {
             return themeElementLiveDataMap.get("hello_world_text_color");
         }
         

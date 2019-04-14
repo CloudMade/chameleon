@@ -2,6 +2,6 @@
 $javaDocInfo
  * @return
  */
-public androidx.lifecycle.MutableLiveData<Integer> $themeElementProvideMethod() {
+public androidx.lifecycle.LiveData<Integer> $themeElementProvideMethod() {
     return themeElementLiveDataMap.get("$themeElementProvideKey");
 }
